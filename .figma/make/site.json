@@ -1,7 +1,8 @@
 {
   "description": "Create a personalized, responsive portfolio website with a clean design that showcases your work effectively, tailored to your style and needs.",
   "robots": {
-    "index": false
+    "index": true,
+    "follow": true
   },
   "accessibility": {
     "addBypassLinks": false,
