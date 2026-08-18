@@ -422,13 +422,13 @@ function CaseSection({ c, index }: { c: (typeof CASES)[number]; index: number })
               </span>
             </h2>
             <p className="text-xs font-medium tracking-[0.18em] text-black/40">{c.tags}</p>
-            <a
+            {/* <a
               href="#contact"
               className="group inline-flex w-fit items-center gap-3 rounded-full border border-black px-6 py-3 text-sm font-semibold tracking-wide transition-colors hover:bg-black hover:text-white"
             >
               DEEP DIVE
               <Arrow className="transition-transform group-hover:translate-x-1" />
-            </a>
+            </a> */}
           </div>
         </div>
       </div>
