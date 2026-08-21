@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
+import Intro from './Intro'
+import navLogo from './imports/logos/Sakusa Logo Black.svg'
 import meTime from './imports/me-time.png'
 import carousel1 from './imports/Carousel_1.png'
 import carousel2 from './imports/Carousel_2.png'
@@ -138,9 +140,9 @@ function Nav({
         <div className="flex flex-1 items-center gap-5">
           <button
             onClick={handleDesign}
-            className="font-display text-xl font-black tracking-tight"
+            className="flex items-center justify-center"
           >
-            SAKUSA
+            <img src={navLogo} alt="SAKUSA" className={`h-6 w-auto ${dark ? 'invert' : ''}`} draggable={false} />
           </button>
           <span
             className={`hidden items-center gap-1.5 text-[11px] font-medium tracking-wide sm:flex ${
@@ -234,11 +236,26 @@ function Carousel() {
 
   useEffect(() => {
     let raf = 0
+    const startTime = performance.now()
     const step = () => {
       const track = trackRef.current
       const container = containerRef.current
       if (track && container) {
-        if (!paused.current && !drag.current.active) offset.current -= 0.6
+        let currentSpeed = 0.6
+        const elapsed = performance.now() - startTime
+        
+        if (elapsed < 5000) {
+          // The intro is fully covering the screen, spin extremely fast invisibly
+          currentSpeed = 40
+        } else if (elapsed < 8500) {
+          // At 5s, the intro has slid up. We decelerate over the next 3.5s
+          // so the user actually sees the fast spin slow down.
+          const t = (elapsed - 5000) / 3500
+          const easeOut = Math.pow(1 - t, 3)
+          currentSpeed = 0.6 + (40 - 0.6) * easeOut
+        }
+
+        if (!paused.current && !drag.current.active) offset.current -= currentSpeed
         const half = track.scrollWidth / 2
         if (half > 0) {
           if (offset.current <= -half) offset.current += half
@@ -325,7 +342,7 @@ function Hero() {
       <Carousel />
 
       {/* Giant typewriter headline — only the prefix types/deletes, DESIGN stays */}
-      <h1 className="pointer-events-none relative z-10 -mb-[6vh] flex items-baseline justify-center whitespace-nowrap font-black uppercase leading-[0.85] tracking-tight text-black [font-size:clamp(40px,10vw,140px)]">
+      <h1 className="pointer-events-none relative z-10 mt-[8vh] -mb-[6vh] flex items-baseline justify-center whitespace-nowrap font-black uppercase leading-[0.85] tracking-tight text-black [font-size:clamp(30px,8vw,110px)]">
         <span>{text}</span>
         <span
           className={`inline-block w-[0.06em] [height:0.82em] self-center bg-black ${
@@ -553,6 +570,7 @@ function About() {
 
 export default function App() {
   const [page, setPage] = useState<'design' | 'about'>('design')
+  const [introDone, setIntroDone] = useState(false)
 
   const navigate = (p: 'design' | 'about') => {
     setPage(p)
@@ -563,6 +581,7 @@ export default function App() {
     <main
       className="min-h-screen bg-white text-black antialiased"
     >
+      {!introDone && <Intro onComplete={() => setIntroDone(true)} />}
       <Nav page={page} onNavigate={navigate} />
 
       {page === 'about' ? (

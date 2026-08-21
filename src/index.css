@@ -41,6 +41,26 @@ body {
   animation: ring-pulse 0.45s ease-out;
 }
 
+/* Intro logo animation */
+@keyframes intro-logo-shrink {
+  0% { transform: scale(1); }
+  85% { transform: scale(1); }
+  100% { transform: scale(0); }
+}
+.animate-intro-logo-shrink {
+  animation: intro-logo-shrink 3.5s cubic-bezier(0.76, 0, 0.24, 1) forwards;
+}
+
+@keyframes intro-logo-fade {
+  0% { opacity: 0; }
+  35% { opacity: 0; }
+  60% { opacity: 1; }
+  100% { opacity: 1; }
+}
+.animate-intro-logo-fade {
+  animation: intro-logo-fade 3.5s cubic-bezier(0.76, 0, 0.24, 1) forwards;
+}
+
 /* Hide scrollbars until scrolling */
 * {
   scrollbar-width: thin;
