@@ -11,6 +11,8 @@ import carousel6 from './imports/Carousel_6.png'
 import caseShipter from './imports/Carousel_1-1.png'
 import caseWheyl from './imports/Carousel_5-1.png'
 import meTime2 from './imports/me-time2.png'
+import nearbySupernova from './imports/AnimatedContents/Nearby Supernova.mp4'
+import sampleCreation from './imports/AnimatedContents/Sample Creation.mp4'
 
 const PORTRAIT = meTime
 
@@ -23,7 +25,7 @@ const SCREENS = [
   carousel6,
 ]
 
-const ROTATING = ['UI/UX', 'GRAPHIC', 'PRODUCT']
+const ROTATING = ['UI/UX DESIGNER', 'ANIMATOR', 'AI VIDEO CREATOR']
 
 const CASES = [
   {
@@ -41,6 +43,22 @@ const CASES = [
     tags: '#WEB   #E-COMMERCE   #BRANDING',
     partners: ['WHEYL', 'SHOPIFY', 'STRIPE', 'KLAVIYO', 'ALGOLIA'],
     img: caseWheyl,
+  },
+  {
+    no: 'CASE 03',
+    title: 'Nearby',
+    italic: 'Supernova',
+    tags: '#ANIMATION   #AI VIDEO   #MOTION DESIGN',
+    partners: ['RUNWAY', 'MIDJOURNEY', 'AFTER EFFECTS'],
+    img: nearbySupernova,
+  },
+  {
+    no: 'CASE 04',
+    title: 'Sample',
+    italic: 'Creation',
+    tags: '#ANIMATION   #AI CREATOR   #MOTION GRAPHICS',
+    partners: ['LUMA', 'PREMIERE PRO', 'BLENDER'],
+    img: sampleCreation,
   },
 ]
 
@@ -341,7 +359,7 @@ function Hero() {
       {/* 3D draggable coverflow band */}
       <Carousel />
 
-      {/* Giant typewriter headline — only the prefix types/deletes, DESIGN stays */}
+      {/* Giant typewriter headline */}
       <h1 className="pointer-events-none relative z-10 mt-[8vh] -mb-[6vh] flex items-baseline justify-center whitespace-nowrap font-black uppercase leading-[0.85] tracking-tight text-black [font-size:clamp(30px,8vw,110px)]">
         <span>{text}</span>
         <span
@@ -350,7 +368,6 @@ function Hero() {
           }`}
           aria-hidden
         />
-        <span className="ml-[0.25em]">DESIGN</span>
       </h1>
 
       {/* Portrait in front */}
@@ -409,19 +426,32 @@ function CaseSection({ c, index }: { c: (typeof CASES)[number]; index: number })
         </div>
 
         <div className="grid flex-1 grid-cols-1 md:grid-cols-2">
-          {/* Left — product image */}
+          {/* Left — product image/video */}
           <div
             className="relative overflow-hidden bg-neutral-100"
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
           >
-            <img
-              src={c.img}
-              alt={`${c.title} ${c.italic}`}
-              className={`h-full w-full object-contain transition-all duration-700 ${
-                hover ? 'scale-105' : ''
-              }`}
-            />
+            {c.img.endsWith('.mp4') ? (
+              <video
+                src={c.img}
+                autoPlay
+                muted
+                loop
+                playsInline
+                className={`h-full w-full object-cover transition-all duration-700 ${
+                  hover ? 'scale-105' : ''
+                }`}
+              />
+            ) : (
+              <img
+                src={c.img}
+                alt={`${c.title} ${c.italic}`}
+                className={`h-full w-full object-contain transition-all duration-700 ${
+                  hover ? 'scale-105' : ''
+                }`}
+              />
+            )}
           </div>
 
           {/* Right — copy */}
