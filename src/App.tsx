@@ -13,6 +13,7 @@ import caseWheyl from './imports/Carousel_5-1.png'
 import meTime2 from './imports/me-time2.png'
 import nearbySupernova from './imports/AnimatedContents/Nearby Supernova.mp4'
 import sampleCreation from './imports/AnimatedContents/Sample Creation.mp4'
+import greatProdigy from "./imports/AnimatedContents/It's Great to be a Prodigy.mp4"
 
 const PORTRAIT = meTime
 
@@ -59,6 +60,14 @@ const CASES = [
     tags: '#ANIMATION   #AI CREATOR   #MOTION GRAPHICS',
     partners: ['LUMA', 'PREMIERE PRO', 'BLENDER'],
     img: sampleCreation,
+  },
+  {
+    no: 'CASE 05',
+    title: "It's Great",
+    italic: 'to be a Prodigy',
+    tags: '#ANIMATION   #AI VIDEO   #MOTION DESIGN',
+    partners: ['RUNWAY', 'MIDJOURNEY', 'AFTER EFFECTS'],
+    img: greatProdigy,
   },
 ]
 
@@ -244,6 +253,8 @@ function useTypewriter(words: string[], typeMs = 90, deleteMs = 45, holdMs = 120
   return { text, done }
 }
 
+let hasIntroPlayed = false
+
 // Draggable, auto-drifting 3D coverflow band of screens.
 function Carousel() {
   const containerRef = useRef<HTMLDivElement>(null)
@@ -262,7 +273,9 @@ function Carousel() {
         let currentSpeed = 0.6
         const elapsed = performance.now() - startTime
         
-        if (elapsed < 5000) {
+        if (hasIntroPlayed) {
+          currentSpeed = 0.6
+        } else if (elapsed < 5000) {
           // The intro is fully covering the screen, spin extremely fast invisibly
           currentSpeed = 40
         } else if (elapsed < 8500) {
@@ -271,6 +284,9 @@ function Carousel() {
           const t = (elapsed - 5000) / 3500
           const easeOut = Math.pow(1 - t, 3)
           currentSpeed = 0.6 + (40 - 0.6) * easeOut
+        } else {
+          hasIntroPlayed = true
+          currentSpeed = 0.6
         }
 
         if (!paused.current && !drag.current.active) offset.current -= currentSpeed
@@ -439,9 +455,8 @@ function CaseSection({ c, index }: { c: (typeof CASES)[number]; index: number })
                 muted
                 loop
                 playsInline
-                className={`h-full w-full object-cover transition-all duration-700 ${
-                  hover ? 'scale-105' : ''
-                }`}
+                controls
+                className="h-full w-full object-contain transition-all duration-700"
               />
             ) : (
               <img
