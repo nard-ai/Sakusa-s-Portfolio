@@ -14,6 +14,8 @@ import meTime2 from './imports/me-time2.png'
 import nearbySupernova from './imports/AnimatedContents/Nearby Supernova.mp4'
 import sampleCreation from './imports/AnimatedContents/Sample Creation.mp4'
 import greatProdigy from "./imports/AnimatedContents/It's Great to be a Prodigy.mp4"
+import caseWorkflow from './imports/Thesis/login.png'
+import hikeUp from './imports/Client/hike.png'
 
 const PORTRAIT = meTime
 
@@ -68,6 +70,23 @@ const CASES = [
     tags: '#ANIMATION   #AI VIDEO   #MOTION DESIGN',
     partners: ['RUNWAY', 'MIDJOURNEY', 'AFTER EFFECTS'],
     img: greatProdigy,
+  },
+  {
+    no: 'CASE 06',
+    title: 'Workflow',
+    italic: 'Management System',
+    tags: '#WEB   #DASHBOARD   #SYSTEM',
+    partners: ['LARAVEL', 'XAMPP', 'TAILWINDCSS', 'MYSQL'],
+    img: caseWorkflow,
+  },
+  {
+    no: 'CASE 07',
+    title: 'HikeUp',
+    italic: 'Your hiking adventure starts here',
+    tags: '#MOBILE   #APP   #BOOKING',
+    partners: ['REACT NATIVE', 'EXPO', 'TAILWINDCSS'],
+    img: hikeUp,
+    fill: true,
   },
 ]
 
@@ -149,19 +168,17 @@ function Nav({
 
   const base = 'px-2.5 py-1 tracking-[0.15em] transition-all duration-200'
   const btnClass = (active: boolean, which: 'design' | 'about') =>
-    `${base} ${
-      active
-        ? dark
-          ? 'bg-white text-black hover:bg-[#7ea04b] hover:text-white'
-          : 'bg-black text-white hover:bg-[#7ea04b]'
-        : `${dark ? 'text-white' : 'text-black'} hover:text-[#7ea04b]`
+    `${base} ${active
+      ? dark
+        ? 'bg-white text-black hover:bg-[#7ea04b] hover:text-white'
+        : 'bg-black text-white hover:bg-[#7ea04b]'
+      : `${dark ? 'text-white' : 'text-black'} hover:text-[#7ea04b]`
     } ${pulse === which ? 'animate-ring' : ''}`
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${
-        dark ? 'bg-black text-white' : 'bg-white text-black'
-      }`}
+      className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${dark ? 'bg-black text-white' : 'bg-white text-black'
+        }`}
     >
       <div className="flex w-full items-center justify-between gap-4 px-6 py-4 sm:px-10">
         <div className="flex flex-1 items-center gap-5">
@@ -172,9 +189,8 @@ function Nav({
             <img src={navLogo} alt="SAKUSA" className={`h-6 w-auto ${dark ? 'invert' : ''}`} draggable={false} />
           </button>
           <span
-            className={`hidden items-center gap-1.5 text-[11px] font-medium tracking-wide sm:flex ${
-              dark ? 'text-white/70' : 'text-black/70'
-            }`}
+            className={`hidden items-center gap-1.5 text-[11px] font-medium tracking-wide sm:flex ${dark ? 'text-white/70' : 'text-black/70'
+              }`}
           >
             <PinIcon />
             SAN PEDRO, PHILIPPINES
@@ -201,9 +217,8 @@ function Nav({
         <div className="flex flex-1 justify-end">
           <a
             href="mailto:sahagunjrbernard@gmail.com"
-            className={`text-[11px] font-medium tracking-wide transition-opacity ${
-              dark ? 'text-white/70 hover:text-white' : 'text-black/70 hover:text-black'
-            }`}
+            className={`text-[11px] font-medium tracking-wide transition-opacity ${dark ? 'text-white/70 hover:text-white' : 'text-black/70 hover:text-black'
+              }`}
           >
             sahagunjrbernard@gmail.com
           </a>
@@ -272,7 +287,7 @@ function Carousel() {
       if (track && container) {
         let currentSpeed = 0.6
         const elapsed = performance.now() - startTime
-        
+
         if (hasIntroPlayed) {
           currentSpeed = 0.6
         } else if (elapsed < 5000) {
@@ -316,7 +331,7 @@ function Carousel() {
 
   const onDown = (e: React.PointerEvent) => {
     drag.current = { active: true, startX: e.clientX, startOffset: offset.current, moved: false }
-    ;(e.currentTarget as HTMLElement).setPointerCapture(e.pointerId)
+      ; (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId)
   }
   const onMove = (e: React.PointerEvent) => {
     if (!drag.current.active) return
@@ -379,9 +394,8 @@ function Hero() {
       <h1 className="pointer-events-none relative z-10 mt-[8vh] -mb-[6vh] flex items-baseline justify-center whitespace-nowrap font-black uppercase leading-[0.85] tracking-tight text-black [font-size:clamp(30px,8vw,110px)]">
         <span>{text}</span>
         <span
-          className={`inline-block w-[0.06em] [height:0.82em] self-center bg-black ${
-            done ? 'animate-pulse' : 'opacity-100'
-          }`}
+          className={`inline-block w-[0.06em] [height:0.82em] self-center bg-black ${done ? 'animate-pulse' : 'opacity-100'
+            }`}
           aria-hidden
         />
       </h1>
@@ -441,10 +455,10 @@ function CaseSection({ c, index }: { c: (typeof CASES)[number]; index: number })
           <span>{String(index + 1).padStart(2, '0')} / {String(CASES.length).padStart(2, '0')}</span>
         </div>
 
-        <div className="grid flex-1 grid-cols-1 md:grid-cols-2">
+        <div className={`grid flex-1 grid-cols-1 md:grid-cols-2 ${c.no === 'CASE 07' ? 'min-h-0' : ''}`}>
           {/* Left — product image/video */}
           <div
-            className="relative overflow-hidden bg-neutral-100"
+            className={`relative overflow-hidden bg-neutral-100 ${c.no === 'CASE 07' ? 'flex items-center justify-center p-8' : ''}`}
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
           >
@@ -462,21 +476,23 @@ function CaseSection({ c, index }: { c: (typeof CASES)[number]; index: number })
               <img
                 src={c.img}
                 alt={`${c.title} ${c.italic}`}
-                className={`h-full w-full object-contain transition-all duration-700 ${
-                  hover ? 'scale-105' : ''
-                }`}
+                className={
+                  c.no === 'CASE 07'
+                    ? `w-auto h-auto max-w-full max-h-full object-contain transition-all duration-700 ${hover ? 'scale-105' : ''}`
+                    : `h-full w-full object-contain transition-all duration-700 ${hover ? 'scale-105' : ''}`
+                }
               />
             )}
           </div>
 
           {/* Right — copy */}
-          <div className="flex flex-col justify-center gap-8 border-t border-black/12 px-6 py-12 md:border-l md:border-t-0 md:px-14">
+          <div className={`flex flex-col justify-center gap-8 border-t border-black/12 px-6 py-12 md:border-l md:border-t-0 md:px-14 ${c.no === 'CASE 07' ? 'overflow-y-auto' : ''}`}>
             <div className="flex flex-wrap items-center gap-x-6 gap-y-3 text-[13px] font-semibold tracking-wide text-black/30">
               {c.partners.map((p) => (
                 <span key={p}>{p}</span>
               ))}
             </div>
-            <h2 className="font-display text-[clamp(40px,5.5vw,88px)] font-black leading-[0.95] tracking-tight">
+            <h2 className={`font-display font-black leading-[0.95] tracking-tight ${c.no === 'CASE 07' ? 'text-[clamp(30px,4vw,56px)]' : 'text-[clamp(40px,5.5vw,88px)]'}`}>
               {c.title}
               <br />
               <span className="italic font-medium" style={{ fontVariationSettings: '"SOFT" 0, "WONK" 1' }}>
