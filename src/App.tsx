@@ -14,6 +14,23 @@ import meTime2 from './imports/me-time2.png'
 import nearbySupernova from './imports/AnimatedContents/Nearby Supernova.mp4'
 import sampleCreation from './imports/AnimatedContents/Sample Creation.mp4'
 import greatProdigy from "./imports/AnimatedContents/It's Great to be a Prodigy.mp4"
+import abcAdventureBus from './imports/AnimatedContents/abc-adventure-bus.mp4'
+import whyYourBrain from './imports/AnimatedContents/why-your-brain.mp4'
+import novaCleanAd from './imports/AnimatedContents/novaclean-ad.mp4'
+import novaCleanPixar from './imports/AnimatedContents/novaclean-ad-pixar.mp4'
+import concept1 from './imports/AnimatedContents/concept-1-animated.mp4'
+import concept2 from './imports/AnimatedContents/concept-2-broll.mp4'
+import concept3 from './imports/AnimatedContents/concept-3-pixar.mp4'
+import income from './imports/AnimatedContents/income.mp4'
+import uvola from './imports/AnimatedContents/uvola-trial-task.mp4'
+import bernardTrial from './imports/AnimatedContents/bernard-trial-task.mp4'
+import trialTask01 from './imports/AnimatedContents/trial-task-01.mp4'
+import task1Sample from './imports/AnimatedContents/task-1-sample.mp4'
+import taskFinal from './imports/AnimatedContents/task-final.mp4'
+import taskWeek20 from './imports/AnimatedContents/task-week-20.mp4'
+import untitled1 from './imports/AnimatedContents/untitled-1.mp4'
+import untitled1001 from './imports/AnimatedContents/untitled-1001.mp4'
+import untitledVideo from './imports/AnimatedContents/untitled-video.mp4'
 import caseWorkflow from './imports/Thesis/login.png'
 import hikeUp from './imports/Client/hike.png'
 
@@ -88,6 +105,32 @@ const CASES = [
     img: hikeUp,
     fill: true,
   },
+  ...[
+    ['CASE 08', 'The ABC', 'Adventure Bus', abcAdventureBus],
+    ['CASE 09', 'Why Your Brain', "Still Thinks You're Being Chased", whyYourBrain],
+    ['CASE 10', 'NovaClean', 'Ad', novaCleanAd],
+    ['CASE 11', 'NovaClean', 'Pixar Style', novaCleanPixar],
+    ['CASE 12', 'Did You Know', 'NovaClean', concept1],
+    ['CASE 13', 'Before You Breathe', 'NovaClean', concept2],
+    ['CASE 14', 'Before You Breathe', 'Pixar', concept3],
+    ['CASE 15', 'Income', '', income],
+    ['CASE 16', 'The Worst Thing', 'For Your Brain', uvola],
+    ['CASE 17', 'Keychain UGC', 'Ad Task', bernardTrial],
+    ['CASE 18', 'Lemon Water', 'Chia Morning', trialTask01],
+    ['CASE 19', 'Keychain UGC', 'Ad Task', task1Sample],
+    ['CASE 20', 'Keychain UGC', 'Ad Task', taskFinal],
+    ['CASE 21', 'Keychain UGC', 'Ad Task', taskWeek20],
+    ['CASE 22', 'Camcorder', 'Animated Short Video', untitled1],
+    ['CASE 23', 'Belysnings Huset', 'Terra', untitled1001],
+    ['CASE 24', 'NovaClean', '40% Off', untitledVideo],
+  ].map(([no, title, italic, img]) => ({
+    no,
+    title,
+    italic,
+    tags: '#ANIMATION   #AI VIDEO   #MOTION DESIGN',
+    partners: ['AI VIDEO', 'MOTION'],
+    img,
+  })),
 ]
 
 function PinIcon() {
@@ -415,9 +458,30 @@ function Hero() {
 // Sequential pinning: each case is a full-screen sticky panel. Because the
 // panels share top-0 and later panels paint above earlier ones, each new
 // section scrolls up, covers the previous, and pins full-screen in turn.
-function CaseSection({ c, index }: { c: (typeof CASES)[number]; index: number }) {
+function CaseSection({
+  c,
+  index,
+  playing,
+}: {
+  c: (typeof CASES)[number]
+  index: number
+  playing: boolean
+}) {
   const [hover, setHover] = useState(false)
   const [exploreOpacity, setExploreOpacity] = useState(1)
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const isVideo = c.img.endsWith('.mp4')
+  const compact = `${c.title} ${c.italic}`.trim().length > 36
+
+  useEffect(() => {
+    const el = videoRef.current
+    if (!el || !isVideo) return
+    if (playing) {
+      el.play().catch(() => {})
+    } else {
+      el.pause()
+    }
+  }, [playing, isVideo])
 
   // Fade the EXPLORE tab out as the user scrolls down from the top.
   useEffect(() => {
@@ -433,6 +497,7 @@ function CaseSection({ c, index }: { c: (typeof CASES)[number]; index: number })
   return (
     <section
       id={index === 0 ? 'work' : undefined}
+      data-case=""
       style={{ zIndex: index + 1 }}
       className="sticky top-0 h-screen w-full pt-[64px]"
     >
@@ -455,22 +520,23 @@ function CaseSection({ c, index }: { c: (typeof CASES)[number]; index: number })
           <span>{String(index + 1).padStart(2, '0')} / {String(CASES.length).padStart(2, '0')}</span>
         </div>
 
-        <div className={`grid flex-1 grid-cols-1 md:grid-cols-2 ${c.no === 'CASE 07' ? 'min-h-0' : ''}`}>
+        <div className="grid min-h-0 flex-1 grid-cols-1 md:grid-cols-2">
           {/* Left — product image/video */}
           <div
-            className={`relative overflow-hidden bg-neutral-100 ${c.no === 'CASE 07' ? 'flex items-center justify-center p-8' : ''}`}
+            className={`relative h-full min-h-0 overflow-hidden bg-neutral-100 ${c.no === 'CASE 07' ? 'flex items-center justify-center p-8' : ''}`}
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
           >
-            {c.img.endsWith('.mp4') ? (
+            {isVideo ? (
               <video
+                ref={videoRef}
                 src={c.img}
-                autoPlay
                 muted
                 loop
                 playsInline
                 controls
-                className="h-full w-full object-contain transition-all duration-700"
+                preload={playing ? 'auto' : 'none'}
+                className="absolute inset-0 h-full w-full object-contain"
               />
             ) : (
               <img
@@ -486,18 +552,22 @@ function CaseSection({ c, index }: { c: (typeof CASES)[number]; index: number })
           </div>
 
           {/* Right — copy */}
-          <div className={`flex flex-col justify-center gap-8 border-t border-black/12 px-6 py-12 md:border-l md:border-t-0 md:px-14 ${c.no === 'CASE 07' ? 'overflow-y-auto' : ''}`}>
+          <div className="flex h-full min-h-0 flex-col justify-center gap-8 overflow-y-auto border-t border-black/12 px-6 py-12 md:border-l md:border-t-0 md:px-14">
             <div className="flex flex-wrap items-center gap-x-6 gap-y-3 text-[13px] font-semibold tracking-wide text-black/30">
               {c.partners.map((p) => (
                 <span key={p}>{p}</span>
               ))}
             </div>
-            <h2 className={`font-display font-black leading-[0.95] tracking-tight ${c.no === 'CASE 07' ? 'text-[clamp(30px,4vw,56px)]' : 'text-[clamp(40px,5.5vw,88px)]'}`}>
+            <h2 className={`font-display font-black leading-[0.95] tracking-tight ${compact || c.no === 'CASE 07' ? 'text-[clamp(30px,4vw,56px)]' : 'text-[clamp(40px,5.5vw,88px)]'}`}>
               {c.title}
-              <br />
-              <span className="italic font-medium" style={{ fontVariationSettings: '"SOFT" 0, "WONK" 1' }}>
-                {c.italic}
-              </span>
+              {c.italic ? (
+                <>
+                  <br />
+                  <span className="italic font-medium" style={{ fontVariationSettings: '"SOFT" 0, "WONK" 1' }}>
+                    {c.italic}
+                  </span>
+                </>
+              ) : null}
             </h2>
             <p className="text-xs font-medium tracking-[0.18em] text-black/40">{c.tags}</p>
             {/* <a
@@ -515,10 +585,33 @@ function CaseSection({ c, index }: { c: (typeof CASES)[number]; index: number })
 }
 
 function Cases() {
+  const [active, setActive] = useState(-1)
+
+  useEffect(() => {
+    const onScroll = () => {
+      const sections = document.querySelectorAll<HTMLElement>('[data-case]')
+      let next = -1
+      sections.forEach((section, i) => {
+        const rect = section.getBoundingClientRect()
+        // Stuck panels share the same top. The last one that has reached
+        // the sticky line is the panel sitting in front.
+        if (rect.top <= 80 && rect.bottom > window.innerHeight * 0.45) next = i
+      })
+      setActive((prev) => (prev === next ? prev : next))
+    }
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onScroll)
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onScroll)
+    }
+  }, [])
+
   return (
     <div>
       {CASES.map((c, i) => (
-        <CaseSection key={c.no} c={c} index={i} />
+        <CaseSection key={c.no} c={c} index={i} playing={i === active} />
       ))}
     </div>
   )
