@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import Intro from './Intro'
 import navLogo from '../Navigation Bar Brand Logo.svg'
+import navLogoDark from '../For Dark mode logo.svg'
 import meTime from './imports/me-time.png'
 import carousel1 from './imports/Carousel_1.png'
 import carousel2 from './imports/Carousel_2.png'
@@ -133,6 +134,9 @@ const CASES = [
   })),
 ]
 
+// Six pieces up front: web, web, mobile, then three motion pieces.
+const FEATURED_NOS = ['CASE 01', 'CASE 06', 'CASE 07', 'CASE 03', 'CASE 08', 'CASE 10']
+
 function PinIcon() {
   return (
     <svg width="8" height="12" viewBox="0 0 8 12" fill="none" className="shrink-0">
@@ -229,7 +233,12 @@ function Nav({
             onClick={handleDesign}
             className="flex shrink-0 items-center justify-center"
           >
-            <img src={navLogo} alt="BERNARD.DESIGN" className="h-4 w-auto sm:h-6" draggable={false} />
+            <img
+              src={dark ? navLogoDark : navLogo}
+              alt="BERNARD.DESIGN"
+              className="h-4 w-auto sm:h-6"
+              draggable={false}
+            />
           </button>
           <span
             className={`hidden items-center gap-1.5 text-[11px] font-medium tracking-wide sm:flex ${dark ? 'text-white/70' : 'text-black/70'
@@ -461,10 +470,12 @@ function Hero() {
 function CaseSection({
   c,
   index,
+  total,
   playing,
 }: {
   c: (typeof CASES)[number]
   index: number
+  total: number
   playing: boolean
 }) {
   const [hover, setHover] = useState(false)
@@ -517,7 +528,7 @@ function CaseSection({
       <div className="flex h-full w-full flex-col overflow-hidden border-y border-black/12 bg-white">
         <div className="flex items-center justify-between border-b border-black/12 px-5 py-2 text-[10px] font-medium tracking-[0.18em] text-black/40">
           <span>{c.no}</span>
-          <span>{String(index + 1).padStart(2, '0')} / {String(CASES.length).padStart(2, '0')}</span>
+          <span>{String(index + 1).padStart(2, '0')} / {String(total).padStart(2, '0')}</span>
         </div>
 
         <div className="grid min-h-0 flex-1 grid-cols-1 md:grid-cols-2">
@@ -584,8 +595,48 @@ function CaseSection({
   )
 }
 
+function MoreCard({ c }: { c: (typeof CASES)[number] }) {
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const isVideo = c.img.endsWith('.mp4')
+
+  return (
+    <article
+      className="bg-white"
+      onMouseEnter={() => {
+        videoRef.current?.play().catch(() => {})
+      }}
+      onMouseLeave={() => videoRef.current?.pause()}
+    >
+      <div className="relative aspect-video overflow-hidden bg-neutral-100">
+        {isVideo ? (
+          <video
+            ref={videoRef}
+            src={c.img}
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            className="h-full w-full object-contain"
+          />
+        ) : (
+          <img src={c.img} alt={`${c.title} ${c.italic}`} className="h-full w-full object-contain" />
+        )}
+      </div>
+      <div className="flex items-baseline justify-between gap-4 border-t border-black/12 px-4 py-4">
+        <h3 className="font-display text-lg font-black leading-tight tracking-tight">
+          {c.title}
+          {c.italic ? <span className="font-medium italic"> {c.italic}</span> : null}
+        </h3>
+        <span className="shrink-0 text-[10px] font-medium tracking-[0.18em] text-black/40">{c.no}</span>
+      </div>
+    </article>
+  )
+}
+
 function Cases() {
   const [active, setActive] = useState(-1)
+  const featured = FEATURED_NOS.map((no) => CASES.find((c) => c.no === no)).filter((c) => c != null)
+  const more = CASES.filter((c) => !FEATURED_NOS.includes(c.no))
 
   useEffect(() => {
     const onScroll = () => {
@@ -610,9 +661,19 @@ function Cases() {
 
   return (
     <div>
-      {CASES.map((c, i) => (
-        <CaseSection key={c.no} c={c} index={i} playing={i === active} />
+      {featured.map((c, i) => (
+        <CaseSection key={c.no} c={c} index={i} total={featured.length} playing={i === active} />
       ))}
+      <section className="relative z-30 bg-white px-5 py-20 sm:px-8">
+        <div className="mx-auto max-w-[1440px]">
+          <p className="mb-10 text-xs font-medium tracking-[0.2em] text-black/40">( MORE WORK )</p>
+          <div className="grid grid-cols-1 gap-px bg-black/12 sm:grid-cols-2 lg:grid-cols-3">
+            {more.map((c) => (
+              <MoreCard key={c.no} c={c} />
+            ))}
+          </div>
+        </div>
+      </section>
     </div>
   )
 }
@@ -665,7 +726,7 @@ function Contact() {
           </div>
         </div>
         <div className="mt-16 flex items-center justify-between text-[11px] tracking-wide text-white/40">
-          <span>SAKUSA © 2026</span>
+          <span>BERNARD.DESIGN © 2026</span>
           <span>SAN PEDRO, PHILIPPINES</span>
         </div>
       </div>
