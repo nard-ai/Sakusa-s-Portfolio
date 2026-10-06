@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import Intro from './Intro'
-import navLogo from './imports/logos/Sakusa Logo Black.svg'
+import navLogo from '../Navigation Bar Brand Logo.svg'
 import meTime from './imports/me-time.png'
 import carousel1 from './imports/Carousel_1.png'
 import carousel2 from './imports/Carousel_2.png'
@@ -227,9 +227,9 @@ function Nav({
         <div className="flex flex-1 items-center gap-5">
           <button
             onClick={handleDesign}
-            className="flex items-center justify-center"
+            className="flex shrink-0 items-center justify-center"
           >
-            <img src={navLogo} alt="SAKUSA" className={`h-6 w-auto ${dark ? 'invert' : ''}`} draggable={false} />
+            <img src={navLogo} alt="BERNARD.DESIGN" className="h-4 w-auto sm:h-6" draggable={false} />
           </button>
           <span
             className={`hidden items-center gap-1.5 text-[11px] font-medium tracking-wide sm:flex ${dark ? 'text-white/70' : 'text-black/70'
@@ -699,11 +699,6 @@ function About() {
             <p>
               I enjoy turning ideas into interfaces that feel purposeful, engaging, and easy to use —
               from the first concept to the final screen.
-            </p>
-            <p>
-              Sakusa is the name behind my portfolio, inspired by one of my favorite players from
-              Haikyuu!!, Sakusa Kiyoomi. I chose the name as a small personal touch — something that
-              reflects one of the things I enjoy while giving my portfolio its own identity.
             </p>
             <p>
               I care about the details that make a design feel complete, from typography and layout

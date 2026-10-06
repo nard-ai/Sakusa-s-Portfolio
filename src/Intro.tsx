@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
-import logoBlack from './imports/logos/Sakusa Logo Black.svg'
-import logoGreen from './imports/logos/Sakusa Logo Green.svg'
+import logoIntro from '../Logo Size for Intro.svg'
+import logoIntroColor from '../Logo Size for intro animation color.svg'
 
 export default function Intro({ onComplete }: { onComplete: () => void }) {
   const [isFadingOut, setIsFadingOut] = useState(false)
@@ -40,16 +40,16 @@ export default function Intro({ onComplete }: { onComplete: () => void }) {
       <div className="relative flex flex-col items-center animate-intro-logo-shrink">
         {/* Black logo (base layer) */}
         <img
-          src={logoBlack}
-          alt="Sakusa Logo"
-          className="w-auto h-[clamp(80px,15vh,180px)] object-contain"
+          src={logoIntro}
+          alt="BERNARD.DESIGN"
+          className="h-auto w-auto max-h-[clamp(80px,15vh,180px)] max-w-[92vw] object-contain"
           draggable={false}
         />
-        {/* Green logo (fades in on top) */}
+        {/* Color logo (fades in on top) */}
         <img
-          src={logoGreen}
-          alt="Sakusa Logo"
-          className="absolute inset-0 w-full h-full object-contain animate-intro-logo-fade"
+          src={logoIntroColor}
+          alt="BERNARD.DESIGN"
+          className="absolute inset-0 h-full w-full object-contain animate-intro-logo-fade"
           draggable={false}
         />
       </div>
