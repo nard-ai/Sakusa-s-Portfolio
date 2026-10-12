@@ -823,6 +823,14 @@ function About() {
             <span>PROTOTYPING</span>
             <span>VISUAL DESIGN</span>
           </div>
+          <a
+            href="/Bernard-Sahagun-Jr-Resume.pdf"
+            download="Bernard-Sahagun-Jr-Resume.pdf"
+            className="group inline-flex w-fit items-center gap-3 rounded-full border border-black px-6 py-3 text-sm font-semibold tracking-wide transition-colors hover:bg-black hover:text-white"
+          >
+            RESUME
+            <Arrow className="transition-transform group-hover:translate-x-1" />
+          </a>
         </div>
       </div>
     </section>
