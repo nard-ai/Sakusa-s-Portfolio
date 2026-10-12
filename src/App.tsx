@@ -32,8 +32,15 @@ import taskWeek20 from './imports/AnimatedContents/task-week-20.mp4'
 import untitled1 from './imports/AnimatedContents/untitled-1.mp4'
 import untitled1001 from './imports/AnimatedContents/untitled-1001.mp4'
 import untitledVideo from './imports/AnimatedContents/untitled-video.mp4'
+import sweetPotato from './imports/AnimatedContents/sweet-potato.mp4'
+import fluffyCake from './imports/AnimatedContents/fluffy-cake.mp4'
 import caseWorkflow from './imports/Thesis/login.png'
 import hikeUp from './imports/Client/hike.png'
+import prestigeAutoCare from './imports/Client/prestige-auto-care.png'
+import shutterCameraStore from './imports/Client/shutter-camera-store.png'
+import quizzySpark from './imports/Client/quizzy-spark.png'
+import nickRizelle from './imports/Client/nick-rizelle-wedding.jpg'
+import homeWorkout from './imports/Client/home-workout.png'
 
 const PORTRAIT = meTime
 
@@ -124,6 +131,8 @@ const CASES = [
     ['CASE 22', 'Camcorder', 'Animated Short Video', untitled1],
     ['CASE 23', 'Belysnings Huset', 'Terra', untitled1001],
     ['CASE 24', 'NovaClean', '40% Off', untitledVideo],
+    ['CASE 25', 'Sweet Potato', '', sweetPotato],
+    ['CASE 26', 'Fluffy Cake', '', fluffyCake],
   ].map(([no, title, italic, img]) => ({
     no,
     title,
@@ -132,6 +141,46 @@ const CASES = [
     partners: ['AI VIDEO', 'MOTION'],
     img,
   })),
+  {
+    no: 'CASE 27',
+    title: 'Prestige',
+    italic: 'Auto Care',
+    tags: '#WEB   #LANDING PAGE   #BRANDING',
+    partners: ['UI DESIGN', 'LANDING PAGE'],
+    img: prestigeAutoCare,
+  },
+  {
+    no: 'CASE 28',
+    title: 'Shutter',
+    italic: 'Camera Store',
+    tags: '#WEB   #E-COMMERCE   #PRODUCT',
+    partners: ['UI DESIGN', 'E-COMMERCE'],
+    img: shutterCameraStore,
+  },
+  {
+    no: 'CASE 29',
+    title: 'Quizzy Spark',
+    italic: 'Quick Sparks',
+    tags: '#WEB   #PRODUCT   #LANDING PAGE',
+    partners: ['UI DESIGN', 'LANDING PAGE'],
+    img: quizzySpark,
+  },
+  {
+    no: 'CASE 30',
+    title: 'Nick & Rizelle',
+    italic: 'Wedding Invitation',
+    tags: '#WEB   #WEDDING   #INVITATION',
+    partners: ['UI DESIGN', 'INVITATION'],
+    img: nickRizelle,
+  },
+  {
+    no: 'CASE 31',
+    title: 'Home Workout',
+    italic: 'Personalized App',
+    tags: '#MOBILE   #APP   #FITNESS',
+    partners: ['UI DESIGN', 'MOBILE APP'],
+    img: homeWorkout,
+  },
 ]
 
 // Six pieces up front: web, web, mobile, then three motion pieces.
@@ -183,7 +232,9 @@ function Nav({
       if (!column) return
       // The white scrolling column covers the footer; once its bottom edge
       // lifts above the nav, the black footer sits behind the bar.
-      setOverFooter(column.getBoundingClientRect().bottom <= 72)
+      const header = document.querySelector('header')
+      const limit = header ? header.offsetHeight : 72
+      setOverFooter(column.getBoundingClientRect().bottom <= limit)
     }
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
@@ -227,7 +278,7 @@ function Nav({
       className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${dark ? 'bg-black text-white' : 'bg-white text-black'
         }`}
     >
-      <div className="flex w-full items-center justify-between gap-4 px-6 py-4 sm:px-10">
+      <div className="flex w-full flex-wrap items-center justify-between gap-x-4 gap-y-3 px-5 py-3 sm:px-10 sm:py-4">
         <div className="flex flex-1 items-center gap-5">
           <button
             onClick={handleDesign}
@@ -249,7 +300,7 @@ function Nav({
           </span>
         </div>
 
-        <nav className="hidden flex-1 items-center justify-center gap-8 text-xs font-medium tracking-wide md:flex">
+        <nav className="order-3 flex w-full items-center justify-center gap-6 border-t border-current/10 pt-3 text-xs font-medium tracking-wide md:order-none md:w-auto md:flex-1 md:gap-8 md:border-0 md:pt-0">
           <button
             onClick={handleDesign}
             onAnimationEnd={() => setPulse(null)}
@@ -510,7 +561,7 @@ function CaseSection({
       id={index === 0 ? 'work' : undefined}
       data-case=""
       style={{ zIndex: index + 1 }}
-      className="sticky top-0 h-screen w-full pt-[64px]"
+      className="sticky top-0 h-screen w-full pt-28 md:pt-[64px]"
     >
       {/* EXPLORE tab on the first case — rides up steadily with the section */}
       {index === 0 && (
@@ -518,7 +569,7 @@ function CaseSection({
           type="button"
           onClick={() => window.scrollBy({ top: window.innerHeight, behavior: 'smooth' })}
           style={{ opacity: exploreOpacity, pointerEvents: exploreOpacity < 0.05 ? 'none' : 'auto' }}
-          className="absolute left-1/2 top-[64px] z-30 flex h-[68px] w-[42px] -translate-x-1/2 -translate-y-full cursor-pointer flex-col items-center justify-start gap-1.5 rounded-t-full rounded-b-md bg-black pt-3 text-white transition-opacity duration-150 hover:-translate-y-[calc(100%-3px)]"
+          className="absolute left-1/2 top-28 z-30 flex h-[68px] w-[42px] -translate-x-1/2 -translate-y-full cursor-pointer flex-col items-center justify-start gap-1.5 rounded-t-full rounded-b-md bg-black pt-3 text-white transition-opacity duration-150 hover:-translate-y-[calc(100%-3px)] md:top-[64px]"
         >
           <span className="text-[7px] font-semibold tracking-[0.18em]">EXPLORE</span>
           <Arrow className="rotate-90" />
