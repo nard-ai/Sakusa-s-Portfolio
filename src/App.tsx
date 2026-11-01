@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import Intro from './Intro'
+import WeddingStudy from './WeddingStudy'
 import navLogo from '../Navigation Bar Brand Logo.svg'
 import navLogoDark from '../For Dark mode logo.svg'
 import meTime from './imports/me-time.png'
@@ -183,8 +184,8 @@ const CASES = [
   },
 ]
 
-// Six pieces up front: web, web, mobile, then three motion pieces.
-const FEATURED_NOS = ['CASE 01', 'CASE 06', 'CASE 07', 'CASE 03', 'CASE 08', 'CASE 10']
+// Nick & Rizelle sits second so the counter reads 02, then the rest of the lead set.
+const FEATURED_NOS = ['CASE 01', 'CASE 30', 'CASE 06', 'CASE 07', 'CASE 03', 'CASE 08', 'CASE 10']
 
 function PinIcon() {
   return (
@@ -523,11 +524,13 @@ function CaseSection({
   index,
   total,
   playing,
+  onDeepDive,
 }: {
   c: (typeof CASES)[number]
   index: number
   total: number
   playing: boolean
+  onDeepDive?: () => void
 }) {
   const [hover, setHover] = useState(false)
   const [exploreOpacity, setExploreOpacity] = useState(1)
@@ -632,13 +635,16 @@ function CaseSection({
               ) : null}
             </h2>
             <p className="text-xs font-medium tracking-[0.18em] text-black/40">{c.tags}</p>
-            {/* <a
-              href="#contact"
-              className="group inline-flex w-fit items-center gap-3 rounded-full border border-black px-6 py-3 text-sm font-semibold tracking-wide transition-colors hover:bg-black hover:text-white"
-            >
-              DEEP DIVE
-              <Arrow className="transition-transform group-hover:translate-x-1" />
-            </a> */}
+            {onDeepDive ? (
+              <button
+                type="button"
+                onClick={onDeepDive}
+                className="group inline-flex w-fit items-center gap-3 rounded-full border border-black px-6 py-3 text-sm font-semibold tracking-wide transition-colors hover:bg-black hover:text-white"
+              >
+                DEEP DIVE
+                <Arrow className="transition-transform group-hover:translate-x-1" />
+              </button>
+            ) : null}
           </div>
         </div>
       </div>
@@ -684,7 +690,7 @@ function MoreCard({ c }: { c: (typeof CASES)[number] }) {
   )
 }
 
-function Cases() {
+function Cases({ onOpenWedding }: { onOpenWedding: () => void }) {
   const [active, setActive] = useState(-1)
   const featured = FEATURED_NOS.map((no) => CASES.find((c) => c.no === no)).filter((c) => c != null)
   const more = CASES.filter((c) => !FEATURED_NOS.includes(c.no))
@@ -713,7 +719,14 @@ function Cases() {
   return (
     <div>
       {featured.map((c, i) => (
-        <CaseSection key={c.no} c={c} index={i} total={featured.length} playing={i === active} />
+        <CaseSection
+          key={c.no}
+          c={c}
+          index={i}
+          total={featured.length}
+          playing={i === active}
+          onDeepDive={c.no === 'CASE 30' ? onOpenWedding : undefined}
+        />
       ))}
       <section className="relative z-30 bg-white px-5 py-20 sm:px-8">
         <div className="mx-auto max-w-[1440px]">
@@ -840,9 +853,21 @@ function About() {
 export default function App() {
   const [page, setPage] = useState<'design' | 'about'>('design')
   const [introDone, setIntroDone] = useState(false)
+  const [study, setStudy] = useState<null | 'wedding'>(null)
 
   const navigate = (p: 'design' | 'about') => {
+    setStudy(null)
     setPage(p)
+    window.scrollTo({ top: 0, behavior: 'auto' })
+  }
+
+  const openWedding = () => {
+    setStudy('wedding')
+    window.scrollTo({ top: 0, behavior: 'auto' })
+  }
+
+  const closeWedding = () => {
+    setStudy(null)
     window.scrollTo({ top: 0, behavior: 'auto' })
   }
 
@@ -855,13 +880,15 @@ export default function App() {
 
       {page === 'about' ? (
         <About />
+      ) : study === 'wedding' ? (
+        <WeddingStudy onClose={closeWedding} />
       ) : (
         <>
           {/* Scrolling column: hero pins, cases stack — sits above the footer and
               leaves a viewport-tall gap so the footer behind can be revealed. */}
           <div id="scroll-column" className="relative z-10 mb-[100vh] bg-white">
             <Hero />
-            <Cases />
+            <Cases onOpenWedding={openWedding} />
           </div>
 
           {/* Footer pinned behind the column — revealed as the last case lifts up */}
